@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti 💖</title>
+
+<style>
+* { box-sizing: border-box; font-family: 'Arial', sans-serif; }
+
+body{
+  margin:0; min-height:100vh; display:flex; justify-content:center; align-items:center;
+  text-align:center; overflow:hidden;
+  animation:bgRomantic 20s ease-in-out infinite;
+}
+
+/* Fondo romántico */
+@keyframes bgRomantic{
+  0%{background:#ffe4e1;}
+  25%{background:#ffd6e8;}
+  50%{background:#fff1c1;}
+  75%{background:#e0f7fa;}
+  100%{background:#ffe4e1;}
+}
+
+.container{
+  background:rgba(255,255,255,.88);
+  padding:26px; border-radius:22px; max-width:92%;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+/* Carta */
+.letter{
+  border:2px dashed #f2a7c6;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:10px;
+  background:#fff7fb;
+}
+.letter p{ margin:4px 0; }
+
+/* Título con brillo */
+.shine{
+  position:relative;
+  display:inline-block;
+  animation: popIn .8s ease-out forwards;
+}
+@keyframes popIn{
+  from{transform:scale(.9); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+.shine::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,.7), transparent 70%);
+  transform:translateX(-120%);
+  animation: shineMove 2.5s infinite;
+}
+@keyframes shineMove{
+  to{transform:translateX(120%);}
+}
+
+/* Botones */
+button{
+  padding:12px 22px; font-size:18px; margin:10px;
+  border:none; border-radius:25px; cursor:pointer; transition:.3s;
+}
+.yes{ background:#e63946; color:#fff; }
+.no{ background:#adb5bd; }
+
+/* Galería */
+.gallery img{
+  width:100%; max-width:240px; border-radius:16px; margin:8px 0;
+}
+
+/* Texto final */
+.love-final{
+  animation:lovePulse 1.6s infinite; color:#e63946; font-size:22px;
+}
+@keyframes lovePulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.12);}
+  100%{transform:scale(1);}
+}
+.signature-final{
+  opacity:0; animation:fadeUp 1.5s ease forwards; animation-delay:.6s;
+}
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* Brillos */
+.sparkle{
+  position:fixed; width:6px; height:6px; background:gold; border-radius:50%;
+  opacity:.85; animation:sparkleFall 3s linear forwards;
+}
+@keyframes sparkleFall{
+  from{transform:translateY(-10px); opacity:1;}
+  to{transform:translateY(100vh); opacity:0;}
+}
+
+/* Ocultar iframe */
+#music { display:none; }
+</style>
+
+</head>
+
+<body>
+
+<div class="container" id="screen1">
+  <div class="letter">
+    <p><strong>De:</strong> Tony Bombón 💌</p>
+    <p><strong>Para:</strong> Su Pekitas 💖</p>
+  </div>
+
+  <h1 class="shine">¿Quieres ser mi San Valentín? 💕</h1>
+
+  <button class="yes" onclick="yesClick()">Sí 💖</button>
+  <button class="no" onclick="moveNo(this)">No 💔</button>
+
+  <p id="noMessage" style="display:none;color:#e63946;margin-top:8px;">
+    💖 Creo que el universo ya decidió por nosotros
+  </p>
+</div>
+
+<div class="container" id="screen2" style="display:none;">
+  <h1>Gracias por todo mi amor 💖</h1>
+
+  <div class="gallery">
+    <img src="https://i.imgur.com/WWA3VCX.jpeg">
+    <img src="https://i.imgur.com/aiH6xPG.png">
+    <img src="https://i.imgur.com/NS8KRw2.jpeg">
+  </div>
+
+  <p>
+    Nos vemos en el <strong>andén del metro Azcapotzalco</strong>,<br>
+    sobre el andén debajo de la escalera como la primera vez
+  </p>
+
+  <p>📅 este sábado 14 de Febrero</p>
+
+  <p>
+    ⏰ No existe un momento perfecto para poder verte y mirarte,
+    así como tampoco una fecha en específico para recordarte
+    lo maravillosa y especial que significas para mí
+  </p>
+
+  <p class="love-final"><strong>TeAmo 3.3millones 💕</strong></p>
+  <p class="signature-final">Siempre tuyo... Tony</p>
+</div>
+
+<!-- 🎶 YouTube API player -->
+<iframe id="music" 
+  src="https://www.youtube.com/embed/QsRhHEIn0Nw?enablejsapi=1&loop=1&playlist=QsRhHEIn0Nw"
+  allow="autoplay; encrypted-media"></iframe>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+let noClicks = 0;
+let player;
+
+function moveNo(btn){
+  noClicks++;
+  if(noClicks >= 3){
+    btn.disabled = true;
+    btn.style.opacity = "0.5";
+    btn.innerText = "💘";
+    document.getElementById("noMessage").style.display = "block";
+    return;
+  }
+  const x = Math.random()*200 - 100;
+  const y = Math.random()*200 - 100;
+  btn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+function onYouTubeIframeAPIReady(){
+  player = new YT.Player('music');
+}
+
+function yesClick(){
+  if(navigator.vibrate) navigator.vibrate(200);
+
+  document.getElementById("screen1").style.display="none";
+  document.getElementById("screen2").style.display="block";
+
+  if(player && player.playVideo) {
+    player.playVideo();
+  }
+}
+
+// Brillos
+function createSparkle(){
+  const s = document.createElement("div");
+  s.className="sparkle";
+  s.style.left = Math.random()*100 + "vw";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),3000);
+}
+setInterval(createSparkle, 500);
+</script>
+
+</body>
+</html>
